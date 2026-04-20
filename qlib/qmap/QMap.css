@@ -1,0 +1,17 @@
+/* #map {
+    height: 450px;
+    width: 100%;
+}
+
+#themeSelect {
+    position: relative;
+    top: 90px;
+    left: 10px;
+    z-index: 5;
+    padding: 6px;
+} */
+
+#map-container {
+    width: 100%;
+    height: 100vh;
+}

@@ -1,0 +1,136 @@
+/* demo buttons */
+.rg-nav-btns{padding:20px;display:flex;gap:10px;flex-wrap:wrap}
+
+/* overlay */
+.rg-nav-overlay{
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.55);
+  opacity:0;
+  visibility:hidden;
+  transition:.3s;
+  z-index:9;
+}
+
+/* nav base */
+.rg-nav{
+  position:fixed;
+  background:#111;
+  color:#fff;
+  z-index:10;
+  padding:30px;
+  display:flex;
+  flex-direction:column;
+  gap:15px;
+  transition:transform .4s ease;
+}
+
+.rg-nav a{
+  color:#fff;
+  text-decoration:none;
+  font-size:16px;
+  letter-spacing:.5px;
+}
+
+.rg-nav a:hover{color:#00ffd5}
+
+/* close */
+.rg-close {
+    align-self: flex-end;
+    cursor: pointer;
+    font-size: 36px;
+    margin-bottom: 10px;
+    width: 40px;
+    height: 40px;
+    background: #f00;
+    text-align: center;
+    line-height: 30px;
+    border-radius: 100px;
+}
+
+/* positions */
+.rg-left{
+  top:0;left:0;
+  width:260px;height:100%;
+  transform:translateX(-100%);
+}
+
+.rg-right{
+  top:0;right:0;
+  width:260px;height:100%;
+  transform:translateX(100%);
+}
+
+.rg-top{
+  top:0;left:0;
+  width:100%;height:220px;
+  transform:translateY(-100%);
+}
+
+.rg-bottom{
+  bottom:0;left:0;
+  width:100%;height:220px;
+  transform:translateY(100%);
+}
+
+.rg-row{
+  display:flex;
+  gap:25px;
+  flex-wrap:wrap;
+}
+
+/* active */
+.rg-nav.active{transform:translate(0,0)}
+.rg-nav-overlay.active{opacity:1;visibility:visible}
+
+
+/* responsive */
+@media(max-width:600px){
+  .rg-row{flex-direction:column}
+}
+
+
+
+
+.drawer {
+  position: fixed;
+  background: #fff;
+  z-index: 9999;
+  transition: transform 0.3s ease;
+  overflow-y: auto;
+}
+
+/* Directions */
+
+.drawer[data-direction="left"] {
+  top: 0;
+  left: 0;
+  width: 300px;
+  height: 100%;
+  transform: translateX(-100%);
+}
+
+.drawer[data-direction="right"] {
+  top: 0;
+  right: 0;
+  width: 300px;
+  height: 100%;
+  transform: translateX(100%);
+}
+
+.drawer[data-direction="top"] {
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 300px;
+  transform: translateY(-100%);
+}
+
+.drawer[data-direction="bottom"] {
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 300px;
+  transform: translateY(100%);
+}
+

@@ -1,0 +1,19 @@
+.rg-video{
+  padding:40px 0;
+}
+.rg-video h2{
+  text-align: center;
+  font-size: 44px;
+  line-height: 48px;
+  font-weight: 600;
+}
+.div-video{
+
+}
+video{
+    width:80%;
+    max-width:800px;
+    border-radius:12px;
+    box-shadow:0 10px 30px rgba(0,0,0,0.6);
+    margin: 0 auto;
+}

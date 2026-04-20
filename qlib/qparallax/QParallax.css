@@ -1,0 +1,98 @@
+.rg-parallax{
+  padding:40px 0;
+}
+.rg-parallax h2{
+  text-align: center;
+  font-size: 44px;
+  line-height: 48px;
+  font-weight: 600;
+}
+
+
+/* horizontal parallax section start */
+/* Normal section */
+.section{
+    height:100vh;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:clamp(22px, 4vw, 40px);
+    background:#f2f2f2;
+    text-align:center;
+    padding:20px;
+}
+
+/* Wrapper creates scroll length */
+.hscroll-wrapper{
+    height:300vh; /* desktop default */
+    position:relative;
+}
+
+/* Sticky horizontal section */
+.hscroll-section{
+    position:sticky;
+    top:0;
+    height:100vh;
+    overflow:hidden;
+    background:#000;
+}
+
+/* Horizontal strip */
+.hscroll-strip{
+    position:absolute;
+    top:0;
+    left:0;
+    height:100%;
+    width:300vw; /* 3 images */
+    display:flex;
+    transform:translateX(0);
+    will-change:transform;
+}
+
+/* Images */
+.hscroll-strip img{
+    width:100vw;
+    height:100%;
+    object-fit:cover;
+    flex-shrink:0;
+}
+
+/* Overlay */
+.hscroll-section::after{
+    content:"";
+    position:absolute;
+    inset:0;
+    background:rgba(0,0,0,0.35);
+}
+
+/* Center text */
+.hscroll-content{
+    position:relative;
+    z-index:2;
+    height:100%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    color:#fff;
+    font-size:clamp(24px, 5vw, 48px);
+    text-align:center;
+    padding:20px;
+}
+
+/* =====================
+   RESPONSIVE TUNING
+===================== */
+
+/* Tablet */
+@media (max-width: 1024px){
+    .hscroll-wrapper{
+        height:260vh; /* thoda fast */
+    }
+}
+
+/* Mobile */
+@media (max-width: 768px){
+    .hscroll-wrapper{
+        height:220vh; /* mobile me scroll kam */
+    }
+}

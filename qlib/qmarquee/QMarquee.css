@@ -1,0 +1,9 @@
+.rg-marquee-head{
+  padding:40px 0;
+}
+.rg-marquee-head h2{
+  text-align: center;
+  font-size: 44px;
+  line-height: 48px;
+  font-weight: 600;
+}
