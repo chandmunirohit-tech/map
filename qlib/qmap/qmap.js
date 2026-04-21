@@ -165,7 +165,6 @@ class QMap {
             zoomControlsEnabled: false,
             mapZoomEnabled: false,
             enableFullScreen: false,
-
             boundaryEnabled: false,
             isPolygonEnable: false,
             isCircleRadiusEnable: false,
