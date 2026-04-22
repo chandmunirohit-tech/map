@@ -148,31 +148,41 @@ class QMap {
         }
 
         const defaultOptions = {
-            // mapKey: 'AIzaSyAilt_8cTAaLj51xHphaKPx_27jrrcrTAw',
+            mapKey: 'AIzaSyAilt_8cTAaLj51xHphaKPx_27jrrcrTAw',
             mapId: '',
-            // markers: [
-            //     {
-            //         latitude: 22.5744,
-            //         longitude: 88.3629,
-            //     },
-            //     {
-            //         latitude: 22.6744,
-            //         longitude: 88.3629,
-            //     },
-
-            // ],
-            cameraControlEnabled: false,
-            zoomControlsEnabled: false,
-            mapZoomEnabled: false,
-            enableFullScreen: false,
-            boundaryEnabled: false,
+            markers: [
+                {
+                    latitude: 22.5744,
+                    longitude: 88.3629,
+                    name: "Marker 1",
+                    tooltip: "Tooltip for Marker 1"
+                },
+                {
+                    latitude: 22.6744,
+                    longitude: 88.3629,
+                    name: "Marker 2",
+                    tooltip: "Tooltip for Marker 2"
+                },
+            ],
+            cameraControlEnabled: true,
+            zoomControlsEnabled: true,
+            mapZoomEnabled: true,
+            enableFullScreen: true,
+            boundaryEnabled: true,
             isPolygonEnable: false,
             isCircleRadiusEnable: true,
-            showViewPresetSelector: false,
+            showViewPresetSelector: true,
 
-            enable: true, // Heatmap
+
+            // Heatmap
+            enable: false,
             heatmapData: [
-                { latitude: "22.5653° N", longitude: "88.4331° E", weight: 1 },
+                { latitude: "52.0328", longitude: "-5.0741", weight: 1 },
+                { latitude: "57.4893", longitude: "-6.098", weight: 2 },
+                { latitude: "59.141", longitude: "-3.3359", weight: 3 },
+                { latitude: "57.4983", longitude: "-6.0969", weight: 4 },
+                { latitude: "57.6406", longitude: "-6.2327", weight: 5 },
+                { latitude: "22.5744", longitude: "88.3629", weight: 1 },
             ],
             radius: 30,
             intensity: 1,
@@ -188,12 +198,20 @@ class QMap {
             tilt: 0,
             heading: 0,
             gestureHandling: "auto",
-            pathType: "",
-            mapStyle: "roadmap",
-            circlradiusColor: "#059275ff",
+            pathType: "route",
+            mapStyle: "eclipse",
+            circlradiusColor: "#9fe46bff",
             polygonColor: "#580000",
-            markerPath: [],
+            pathStrokeColor: "#FF0000",
+            pathStrokeWidth: 3,
+            markerPath: [
+                {
+                    srcLatitude: 22.5744, srcLongitude: 88.3629,
+                    desLatitude: 22.6744, desLongitude: 88.3629
+                },
+            ],
 
+            centerMarkers: [],
             heatmapAggregation: "SUM",
             customStyles: [],
             heatmapWeightProp: "weight",
@@ -330,6 +348,7 @@ class QMap {
                 enableFullScreen, mapId,
                 boundaryEnabled, isPolygonEnable, pathType, polygonColor,
                 isCircleRadiusEnable, radiusColor, circlradiusColor, markerPath,
+                pathStrokeColor, pathStrokeWidth,
                 enable, heatmapData, radius, intensity, heatmapThreshold, heatmapAggregation, heatmapWeightProp, heatmapColorRange, colorGradient
             } = this.options;
 
@@ -682,11 +701,13 @@ class QMap {
                     };
 
                     if (!isNaN(src.lat) && !isNaN(src.lng) && !isNaN(des.lat) && !isNaN(des.lng)) {
-                        const rawStrokeColor = pathObj.strokeColor || polygonColor || "#FF0000";
+                        const rawStrokeColor = pathObj.strokeColor || pathStrokeColor || polygonColor || "#FF0000";
                         const { color: pColor, opacity: pOpacity } = this._parseColor(rawStrokeColor, 1.0);
-                        const pWeight = parseFloat(pathObj.strokeWidth) || 2;
+                        const pWeight = parseFloat(pathObj.strokeWidth || pathStrokeWidth) || 2;
 
-                        if (pathObj.pathType === "route") {
+                        const currentPathType = (pathObj.pathType || pathType || "straightline").toLowerCase();
+
+                        if (currentPathType === "route") {
                             const directionsService = new window.google.maps.DirectionsService();
                             directionsService.route(
                                 {
