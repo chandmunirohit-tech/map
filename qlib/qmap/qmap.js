@@ -167,29 +167,22 @@ class QMap {
             enableFullScreen: false,
             boundaryEnabled: false,
             isPolygonEnable: false,
-            isCircleRadiusEnable: false,
+            isCircleRadiusEnable: true,
             showViewPresetSelector: false,
 
             enable: true, // Heatmap
             heatmapData: [
                 { latitude: "22.5653° N", longitude: "88.4331° E", weight: 1 },
-                // { latitude: "57.4893", longitude: "-6.098", weight: 1 },
-                // { latitude: "59.141", longitude: "-3.3359", weight: 1 },
-                // { latitude: "57.4983", longitude: "-6.0969", weight: 1 },
-                // { latitude: "57.6406", longitude: "-6.2327", weight: 1 },
-                // { latitude: "57.5103", longitude: "-6.0959", weight: 1 },
             ],
             radius: 30,
             intensity: 1,
             heatmapThreshold: 0.05,
-            heatmapWeightProp: "weight",
             heatmapColorRange: null,
             colorGradient: [
                 { "stop": 25, "color": "#0000FF" },
                 { "stop": 55, "color": "#00FF00" },
                 { "stop": 85, "color": "#FFEB3B" },
             ],
-            heatmapAggregation: "SUM",
 
             zoom: 12,
             tilt: 0,
@@ -197,10 +190,13 @@ class QMap {
             gestureHandling: "auto",
             pathType: "",
             mapStyle: "roadmap",
-            customStyles: [],
-            radiusColor: "#FF0000",
-            polygonColor: "#FF0000",
+            circlradiusColor: "#059275ff",
+            polygonColor: "#580000",
             markerPath: [],
+
+            heatmapAggregation: "SUM",
+            customStyles: [],
+            heatmapWeightProp: "weight",
         };
 
         this.options = { ...defaultOptions, ...options };
@@ -211,6 +207,35 @@ class QMap {
 
         this.renderContainer();
         this.initMap();
+    }
+
+    _parseColor(color, defaultOpacity = 1.0) {
+        if (!color || typeof color !== 'string') {
+            return { color: '#000000', opacity: defaultOpacity };
+        }
+
+        let hexColor = color;
+        let opacity = defaultOpacity;
+
+        if (color.startsWith('#')) {
+            if (color.length === 9) { // #RRGGBBAA
+                hexColor = color.substring(0, 7);
+                opacity = parseInt(color.substring(7, 9), 16) / 255;
+            } else if (color.length === 5) { // #RGBA
+                hexColor = '#' + color.substring(1, 4).split('').map(s => s + s).join('');
+                opacity = parseInt(color.substring(4, 5) + color.substring(4, 5), 16) / 255;
+            } else if (color.length === 4) { // #RGB
+                hexColor = '#' + color.substring(1, 4).split('').map(s => s + s).join('');
+            }
+        } else if (color.startsWith('rgba')) {
+            const match = color.match(/rgba\s*\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)\s*,\s*([\d.]+)\s*\)/);
+            if (match) {
+                hexColor = `rgb(${match[1]}, ${match[2]}, ${match[3]})`;
+                opacity = parseFloat(match[4]);
+            }
+        }
+
+        return { color: hexColor, opacity: opacity };
     }
 
     _getInitialPreset() {
@@ -304,7 +329,7 @@ class QMap {
                 gestureHandling, zoomControlsEnabled, mapZoomEnabled, cameraControlEnabled,
                 enableFullScreen, mapId,
                 boundaryEnabled, isPolygonEnable, pathType, polygonColor,
-                isCircleRadiusEnable, radiusColor, markerPath,
+                isCircleRadiusEnable, radiusColor, circlradiusColor, markerPath,
                 enable, heatmapData, radius, intensity, heatmapThreshold, heatmapAggregation, heatmapWeightProp, heatmapColorRange, colorGradient
             } = this.options;
 
@@ -414,21 +439,7 @@ class QMap {
                 return [0.0, 0.2, 0.4, 0.6, 0.8, 1.0].map(s => getColorAt(s));
             };
 
-            const getRGBFromHex = (hex) => {
-                if (!hex || typeof hex !== 'string') return "#FF0000";
-                if (hex.startsWith("#") && hex.length === 9) {
-                    return `#${hex.substring(3, 9)}`;
-                }
-                return hex.substring(0, 7);
-            };
 
-            const getAlphaFromHex = (hex, defaultAlpha = 0.2) => {
-                if (!hex || typeof hex !== 'string' || hex.length !== 9) return parseFloat(defaultAlpha);
-                const a = hex.substring(1, 3);
-                const parsedAlpha = parseInt(a, 16) / 255;
-                if (parsedAlpha === 1) return parseFloat(defaultAlpha);
-                return isNaN(parsedAlpha) ? parseFloat(defaultAlpha) : parsedAlpha;
-            };
 
             let AdvancedMarkerElement, PinElement;
             let useAdvancedMarkers = false;
@@ -505,8 +516,7 @@ class QMap {
                 let markerInstance;
 
                 if (useAdvancedMarkers) {
-                    const pinColor = getRGBFromHex(marker.color) || "#EA4335";
-                    const pinAlpha = getAlphaFromHex(marker.color, 1.0);
+                    const { color: pinColor, opacity: pinAlpha } = this._parseColor(marker.color || "#EA4335", 1.0);
                     const pinCustom = new PinElement({
                         background: pinColor,
                         borderColor: "#FFFFFF",
@@ -550,8 +560,7 @@ class QMap {
                         content: content,
                     });
                 } else {
-                    const pinColor = getRGBFromHex(marker.color) || "#EA4335";
-                    const pinAlpha = getAlphaFromHex(marker.color, 1.0);
+                    const { color: pinColor, opacity: pinAlpha } = this._parseColor(marker.color || "#EA4335", 1.0);
 
                     let finalColor = pinColor;
                     if (pinAlpha < 1) {
@@ -597,8 +606,8 @@ class QMap {
                         radiusInMeters *= 1000;
                     }
 
-                    const mRadiusColor = getRGBFromHex(marker.radiusColor || radiusColor);
-                    const mFillOpacity = getAlphaFromHex(marker.radiusColor || radiusColor, 0.5);
+                    const { color: mRadiusColor } = this._parseColor(marker.radiusColor || marker.circlradiusColor || circlradiusColor || radiusColor);
+                    const mFillOpacity = 0.5; // Default transparency of 60% for every color code as requested
 
                     new window.google.maps.Circle({
                         map,
@@ -638,9 +647,9 @@ class QMap {
                     new window.google.maps.Polygon({
                         paths: polygonCoords,
                         map,
-                        strokeColor: polygonColor,
-                        fillColor: polygonColor,
-                        fillOpacity: 0.2,
+                        strokeColor: this._parseColor(polygonColor).color,
+                        fillColor: this._parseColor(polygonColor).color,
+                        fillOpacity: this._parseColor(polygonColor, 0.2).opacity,
                     });
                 } else if (pathType === "route") {
                     const directionsService = new window.google.maps.DirectionsService();
@@ -652,7 +661,8 @@ class QMap {
                     }, (result, status) => {
                         if (status === "OK") {
                             const fullPath = result.routes[0].legs.flatMap(leg => leg.steps.flatMap(step => step.path));
-                            new window.google.maps.Polygon({ paths: fullPath, map, strokeColor: polygonColor, fillColor: polygonColor, fillOpacity: 0.2 });
+                            const { color: pCol, opacity: pOp } = this._parseColor(polygonColor, 0.2);
+                            new window.google.maps.Polygon({ paths: fullPath, map, strokeColor: pCol, fillColor: pCol, fillOpacity: pOp });
                         }
                     });
                 }
@@ -673,8 +683,7 @@ class QMap {
 
                     if (!isNaN(src.lat) && !isNaN(src.lng) && !isNaN(des.lat) && !isNaN(des.lng)) {
                         const rawStrokeColor = pathObj.strokeColor || polygonColor || "#FF0000";
-                        const pColor = getRGBFromHex(rawStrokeColor);
-                        const pOpacity = getAlphaFromHex(rawStrokeColor, 1.0);
+                        const { color: pColor, opacity: pOpacity } = this._parseColor(rawStrokeColor, 1.0);
                         const pWeight = parseFloat(pathObj.strokeWidth) || 2;
 
                         if (pathObj.pathType === "route") {
