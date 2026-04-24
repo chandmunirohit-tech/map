@@ -154,14 +154,30 @@ class QMap {
                 {
                     latitude: 22.5744,
                     longitude: 88.3629,
-                    name: "Marker 1",
-                    tooltip: "Tooltip for Marker 1"
+                    name: "Marker 1 (Global Icon)",
+                    tooltip: "This marker uses the global customMarkerIcon",
+                    customMarkerIcon: "https://media.istockphoto.com/id/1141342422/photo/beautiful-abstract-painting-is-a-painting-technique-ebru-turkish-ebru-style-on-the-water-with.jpg?s=1024x1024&w=is&k=20&c=3YaI_aSpX5tBwkpdRwC1PBGrGfkteIa0iGVrGHp27io="
                 },
                 {
                     latitude: 22.6744,
                     longitude: 88.3629,
-                    name: "Marker 2",
-                    tooltip: "Tooltip for Marker 2"
+                    name: "Marker 2 (Unique Icon)",
+                    tooltip: "This marker has its own customMarkerIcon",
+                    customMarkerIcon: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQRwnkOAJuVNRPzQuPEVVeQi37zUpc7mIjrAQ&s"
+                },
+                {
+                    latitude: 22.5744,
+                    longitude: 88.4629,
+                    name: "Marker 3 (Unique Icon)",
+                    tooltip: "This marker has its own customMarkerIcon",
+                    customMarkerIcon: "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?q=80&w=800&auto=format&fit=crop"
+                },
+                {
+                    latitude: 22.6744,
+                    longitude: 88.2629,
+                    name: "Marker 4 (Unique Icon)",
+                    tooltip: "This marker has its own customMarkerIcon",
+                    customMarkerIcon: "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?q=80&w=800&auto=format&fit=crop"
                 },
             ],
             cameraControlEnabled: true,
@@ -199,7 +215,7 @@ class QMap {
             heading: 0,
             gestureHandling: "auto",
             pathType: "route",
-            mapStyle: "eclipse",
+            mapStyle: "alabaster",
             circlradiusColor: "#9fe46bff",
             polygonColor: "#580000",
             pathStrokeColor: "#FF0000",
@@ -349,7 +365,8 @@ class QMap {
                 boundaryEnabled, isPolygonEnable, pathType, polygonColor,
                 isCircleRadiusEnable, radiusColor, circlradiusColor, markerPath,
                 pathStrokeColor, pathStrokeWidth,
-                enable, heatmapData, radius, intensity, heatmapThreshold, heatmapAggregation, heatmapWeightProp, heatmapColorRange, colorGradient
+                enable, heatmapData, radius, intensity, heatmapThreshold, heatmapAggregation, heatmapWeightProp, heatmapColorRange, colorGradient,
+                customMarkerIcon
             } = this.options;
 
             const center = centerMarkers[0] || markers[0];
@@ -532,6 +549,10 @@ class QMap {
 
                 if (isNaN(position.lat) || isNaN(position.lng)) return;
 
+                const currentCustomIcon = marker.customMarkerIcon || customMarkerIcon;
+                const legacyIconUrl = marker.icon || (typeof markerPath === "string" && markerPath.trim() !== "" ? markerPath : undefined);
+                const iconUrl = currentCustomIcon || legacyIconUrl;
+
                 let markerInstance;
 
                 if (useAdvancedMarkers) {
@@ -552,24 +573,31 @@ class QMap {
                     }
 
                     let content = pinCustom.element;
-                    if (marker.icon || (typeof markerPath === "string" && markerPath.trim() !== "")) {
-                        const iconUrl = marker.icon || markerPath;
+                    if (iconUrl) {
                         const iconSize = marker.markerIconSize ? `${marker.markerIconSize}px` : "32px";
 
-                        const div = document.createElement("div");
-                        div.style.width = iconSize;
-                        div.style.height = iconSize;
-                        div.style.backgroundColor = finalColor;
-                        div.style.maskImage = `url("${iconUrl}")`;
-                        div.style.maskSize = "contain";
-                        div.style.maskRepeat = "no-repeat";
-                        div.style.maskPosition = "center";
-                        div.style.WebkitMaskImage = `url("${iconUrl}")`;
-                        div.style.WebkitMaskSize = "contain";
-                        div.style.WebkitMaskRepeat = "no-repeat";
-                        div.style.WebkitMaskPosition = "center";
-
-                        content = div;
+                        if (currentCustomIcon) {
+                            const img = document.createElement("img");
+                            img.src = currentCustomIcon;
+                            img.style.width = iconSize;
+                            img.style.height = iconSize;
+                            img.style.objectFit = "contain";
+                            content = img;
+                        } else {
+                            const div = document.createElement("div");
+                            div.style.width = iconSize;
+                            div.style.height = iconSize;
+                            div.style.backgroundColor = finalColor;
+                            div.style.maskImage = `url("${iconUrl}")`;
+                            div.style.maskSize = "contain";
+                            div.style.maskRepeat = "no-repeat";
+                            div.style.maskPosition = "center";
+                            div.style.WebkitMaskImage = `url("${iconUrl}")`;
+                            div.style.WebkitMaskSize = "contain";
+                            div.style.WebkitMaskRepeat = "no-repeat";
+                            div.style.WebkitMaskPosition = "center";
+                            content = div;
+                        }
                     }
 
                     markerInstance = new AdvancedMarkerElement({
@@ -589,24 +617,34 @@ class QMap {
                         finalColor = `rgba(${r}, ${g}, ${b}, ${pinAlpha})`;
                     }
 
-                    const iconUrl = marker.icon || (typeof markerPath === "string" && markerPath.trim() !== "" ? markerPath : undefined);
-
                     if (iconUrl) {
                         const iconSize = marker.markerIconSize ? `${marker.markerIconSize}px` : "32px";
-                        const div = document.createElement("div");
-                        div.style.width = iconSize;
-                        div.style.height = iconSize;
-                        div.style.backgroundColor = finalColor;
-                        div.style.maskImage = `url("${iconUrl}")`;
-                        div.style.maskSize = "contain";
-                        div.style.maskRepeat = "no-repeat";
-                        div.style.maskPosition = "center";
-                        div.style.WebkitMaskImage = `url("${iconUrl}")`;
-                        div.style.WebkitMaskSize = "contain";
-                        div.style.WebkitMaskRepeat = "no-repeat";
-                        div.style.WebkitMaskPosition = "center";
+                        let content;
 
-                        markerInstance = new CustomOverlay(position, div, map, `${marker.name || marker.title}`);
+                        if (currentCustomIcon) {
+                            const img = document.createElement("img");
+                            img.src = currentCustomIcon;
+                            img.style.width = iconSize;
+                            img.style.height = iconSize;
+                            img.style.objectFit = "contain";
+                            content = img;
+                        } else {
+                            const div = document.createElement("div");
+                            div.style.width = iconSize;
+                            div.style.height = iconSize;
+                            div.style.backgroundColor = finalColor;
+                            div.style.maskImage = `url("${iconUrl}")`;
+                            div.style.maskSize = "contain";
+                            div.style.maskRepeat = "no-repeat";
+                            div.style.maskPosition = "center";
+                            div.style.WebkitMaskImage = `url("${iconUrl}")`;
+                            div.style.WebkitMaskSize = "contain";
+                            div.style.WebkitMaskRepeat = "no-repeat";
+                            div.style.WebkitMaskPosition = "center";
+                            content = div;
+                        }
+
+                        markerInstance = new CustomOverlay(position, content, map, `${marker.name || marker.title}`);
                     } else {
                         markerInstance = new window.google.maps.Marker({
                             position,

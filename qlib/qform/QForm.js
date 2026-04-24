@@ -1,142 +1,187 @@
-document.addEventListener("DOMContentLoaded", function () {
+// document.addEventListener("DOMContentLoaded", function () {
 
-  emailjs.init("YOUR_PUBLIC_KEY");
+//   emailjs.init("YOUR_PUBLIC_KEY");
 
-  const formContainer = document.getElementById("dynamicForm");
+//   const formContainer = document.getElementById("dynamicForm");
 
-  const fields = [
-    {
-      type:"text",
-      name:"user_name",
-      label:"Name",
-      placeholder:"Enter your name"
-    },
-    {
-      type:"number",
-      name:"user_number",
-      label:"Phone",
-      placeholder:"Enter phone number"
-    },
-    {
-      type:"textarea",
-      name:"message",
-      label:"Message",
-      placeholder:"Write your message"
-    }
-  ];
-
-
-  fields.forEach(field => {
-
-    const wrapper = document.createElement("div");
-
-    const label = document.createElement("label");
-    label.innerText = field.label;
-    label.className = "block text-sm font-medium mb-1";
-
-    let element;
-
-    if(field.type === "textarea"){
-      element = document.createElement("textarea");
-    }
-    else{
-      element = document.createElement("input");
-      element.type = field.type;
-    }
-
-    element.name = field.name;
-    element.placeholder = field.placeholder;
-    element.className =
-    "w-full border border-gray-300 rounded-lg p-2 focus:ring-2 focus:ring-blue-500 focus:outline-none";
-
-    const error = document.createElement("p");
-    error.className = "text-red-500 text-sm mt-1 hidden";
-
-    wrapper.appendChild(label);
-    wrapper.appendChild(element);
-    wrapper.appendChild(error);
-
-    formContainer.appendChild(wrapper);
-
-  });
+//   const fields = [
+//     {
+//       type:"text",
+//       name:"user_name",
+//       label:"Name",
+//       placeholder:"Enter your name"
+//     },
+//     {
+//       type:"number",
+//       name:"user_number",
+//       label:"Phone",
+//       placeholder:"Enter phone number"
+//     },
+//     {
+//       type:"textarea",
+//       name:"message",
+//       label:"Message",
+//       placeholder:"Write your message"
+//     }
+//   ];
 
 
+//   fields.forEach(field => {
 
-  document.getElementById("sendBtn").addEventListener("click", function(){
+//     const wrapper = document.createElement("div");
 
-    let valid = true;
+//     const label = document.createElement("label");
+//     label.innerText = field.label;
+//     label.className = "block text-sm font-medium mb-1";
 
-    const nameInput = document.querySelector('[name="user_name"]');
-    const phoneInput = document.querySelector('[name="user_number"]');
-    const messageInput = document.querySelector('[name="message"]');
+//     let element;
 
-    const nameError = nameInput.nextElementSibling;
-    const phoneError = phoneInput.nextElementSibling;
-    const messageError = messageInput.nextElementSibling;
+//     if(field.type === "textarea"){
+//       element = document.createElement("textarea");
+//     }
+//     else{
+//       element = document.createElement("input");
+//       element.type = field.type;
+//     }
 
-    nameError.classList.add("hidden");
-    phoneError.classList.add("hidden");
-    messageError.classList.add("hidden");
+//     element.name = field.name;
+//     element.placeholder = field.placeholder;
+//     element.className =
+//     "w-full border border-gray-300 rounded-lg p-2 focus:ring-2 focus:ring-blue-500 focus:outline-none";
 
-    nameInput.classList.remove("border-red-500");
-    phoneInput.classList.remove("border-red-500");
-    messageInput.classList.remove("border-red-500");
+//     const error = document.createElement("p");
+//     error.className = "text-red-500 text-sm mt-1 hidden";
 
+//     wrapper.appendChild(label);
+//     wrapper.appendChild(element);
+//     wrapper.appendChild(error);
 
-    if(nameInput.value.trim() === ""){
-      nameError.innerText = "Name is required";
-      nameError.classList.remove("hidden");
-      nameInput.classList.add("border-red-500");
-      valid = false;
-    }
+//     formContainer.appendChild(wrapper);
 
-
-    if(phoneInput.value.trim() === ""){
-      phoneError.innerText = "Phone number is required";
-      phoneError.classList.remove("hidden");
-      phoneInput.classList.add("border-red-500");
-      valid = false;
-    }
-    else if(!/^[0-9]{10}$/.test(phoneInput.value)){
-      phoneError.innerText = "Enter valid 10 digit phone number";
-      phoneError.classList.remove("hidden");
-      phoneInput.classList.add("border-red-500");
-      valid = false;
-    }
+//   });
 
 
-    if(messageInput.value.trim() === ""){
-      messageError.innerText = "Message cannot be empty";
-      messageError.classList.remove("hidden");
-      messageInput.classList.add("border-red-500");
-      valid = false;
-    }
-    else if(messageInput.value.trim().length < 5){
-      messageError.innerText = "Message must be at least 5 characters";
-      messageError.classList.remove("hidden");
-      messageInput.classList.add("border-red-500");
-      valid = false;
-    }
+
+//   document.getElementById("sendBtn").addEventListener("click", function(){
+
+//     let valid = true;
+
+//     const nameInput = document.querySelector('[name="user_name"]');
+//     const phoneInput = document.querySelector('[name="user_number"]');
+//     const messageInput = document.querySelector('[name="message"]');
+
+//     const nameError = nameInput.nextElementSibling;
+//     const phoneError = phoneInput.nextElementSibling;
+//     const messageError = messageInput.nextElementSibling;
+
+//     nameError.classList.add("hidden");
+//     phoneError.classList.add("hidden");
+//     messageError.classList.add("hidden");
+
+//     nameInput.classList.remove("border-red-500");
+//     phoneInput.classList.remove("border-red-500");
+//     messageInput.classList.remove("border-red-500");
 
 
-    if(!valid) return;
+//     if(nameInput.value.trim() === ""){
+//       nameError.innerText = "Name is required";
+//       nameError.classList.remove("hidden");
+//       nameInput.classList.add("border-red-500");
+//       valid = false;
+//     }
 
 
-    const params = {
-      user_name: nameInput.value,
-      user_number: phoneInput.value,
-      message: messageInput.value
-    };
+//     if(phoneInput.value.trim() === ""){
+//       phoneError.innerText = "Phone number is required";
+//       phoneError.classList.remove("hidden");
+//       phoneInput.classList.add("border-red-500");
+//       valid = false;
+//     }
+//     else if(!/^[0-9]{10}$/.test(phoneInput.value)){
+//       phoneError.innerText = "Enter valid 10 digit phone number";
+//       phoneError.classList.remove("hidden");
+//       phoneInput.classList.add("border-red-500");
+//       valid = false;
+//     }
 
-    emailjs.send("YOUR_SERVICE_ID","YOUR_TEMPLATE_ID",params)
-    .then(function(){
-      alert("Mail Sent Successfully ✅");
-    })
-    .catch(function(error){
-      alert("Error ❌");
-      console.log(error);
-    });
 
-  });
+//     if(messageInput.value.trim() === ""){
+//       messageError.innerText = "Message cannot be empty";
+//       messageError.classList.remove("hidden");
+//       messageInput.classList.add("border-red-500");
+//       valid = false;
+//     }
+//     else if(messageInput.value.trim().length < 5){
+//       messageError.innerText = "Message must be at least 5 characters";
+//       messageError.classList.remove("hidden");
+//       messageInput.classList.add("border-red-500");
+//       valid = false;
+//     }
 
+
+//     if(!valid) return;
+
+
+//     const params = {
+//       user_name: nameInput.value,
+//       user_number: phoneInput.value,
+//       message: messageInput.value
+//     };
+
+//     emailjs.send("YOUR_SERVICE_ID","YOUR_TEMPLATE_ID",params)
+//     .then(function(){
+//       alert("Mail Sent Successfully ✅");
+//     })
+//     .catch(function(error){
+//       alert("Error ❌");
+//       console.log(error);
+//     });
+
+//   });
+
+// });
+
+
+// form 1
+document.getElementById("contactForm").addEventListener("submit", function(e) {
+  e.preventDefault();
+  let name = document.getElementById("name").value.trim();
+  let email = document.getElementById("email").value.trim();
+  let mobile = document.getElementById("mobile").value.trim();
+  let pin = document.getElementById("pin").value.trim();
+  let terms = document.getElementById("terms").checked;
+  let errorMsg = document.getElementById("errorMsg");
+
+  errorMsg.innerText = "";
+
+  if (name === "") {
+    errorMsg.innerText = "Name is required";
+    return;
+  }
+
+  if (!email.match(/^\S+@\S+\.\S+$/)) {
+    errorMsg.innerText = "Enter valid email";
+    return;
+  }
+
+  if (!mobile.match(/^[0-9]{10}$/)) {
+    errorMsg.innerText = "Enter valid 10 digit mobile number";
+    return;
+  }
+
+  if (!pin.match(/^[0-9]{6}$/)) {
+    errorMsg.innerText = "Enter valid PIN code";
+    return;
+  }
+
+  if (!terms) {
+    errorMsg.innerText = "Please accept terms & conditions";
+    return;
+  }
+
+  alert("Form Submitted Successfully ✅");
 });
+
+
+// form 2
+

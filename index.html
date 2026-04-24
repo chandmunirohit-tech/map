@@ -1897,102 +1897,30 @@
 
     <!-- map intrigation start -->
     <section>
-      <!-- ===== google map theme intrigation option ===== -->
+        <div>
+            <div id="map-container"></div>
+            <!-- Deck.gl dependencies -->
+            <script src="../../utils/deck.gl/dist.min.js"></script>
+            <script src="../../utils/deck.gl/google-maps.min.js"></script>
 
-      <div>
-
-        <!-- Theme selector (optional) -->
-        <!-- <select id="themeSelect">
-    <option value="eclipse">Eclipse</option>
-    <option value="alabaster">Alabaster</option>
-    <option value="candy">Candy</option>
-    <option value="nautical">Nautical</option>
-    <option value="parchment">Parchment</option>
-  </select> -->
-
-        <!-- Map -->
-        <!-- <div id="map"></div> -->
-
-        <div id="map-container"></div>
-        <!-- Deck.gl dependencies -->
-        <script src="utils/deck.gl/dist.min.js"></script>
-        <script src="utils/deck.gl/google-maps.min.js"></script>
-
-        <!-- Include the vanilla JS library -->
-        <script src="qlib/qmap/QMap.js"></script>
-        <script>
-          document.addEventListener("DOMContentLoaded", () => {
-            const markers = [
-              {
-                latitude: 22.5744,
-                longitude: 88.3629,
-              },
-              {
-                latitude: 22.6744,
-                longitude: 88.3629,
-              },
-
-            ];
-
-            const heatmapData = [
-              { latitude: "52.0328", longitude: "-5.0741", weight: 1 },
-              { latitude: "57.4893", longitude: "-6.098", weight: 2 },
-              { latitude: "59.141", longitude: "-3.3359", weight: 3 },
-              { latitude: "57.4983", longitude: "-6.0969", weight: 4 },
-              { latitude: "57.6406", longitude: "-6.2327", weight: 5 },
-              { latitude: "22.5744", longitude: "88.3629", weight: 1 },
-            ];
-
-
-            const map = new QMap("map-container", {
-              mapKey: "AIzaSyAilt_8cTAaLj51xHphaKPx_27jrrcrTAw", // Same key from original JSX
-              width: "100%",
-              height: "100%",
-              zoom: 12,
-              mapStyle: "eclipse",
-              markers: markers,
-              centerMarkers: [markers[0]],
-              boundaryEnabled: true,
-              showViewPresetSelector: true,
-              cameraControlEnabled: true,
-              zoomControlsEnabled: true,
-              mapZoomEnabled: true,
-              enableFullScreen: true,
-
-              // Polyline / Path Example
-              markerPath: [
-                {
-                  srcLatitude: 22.5744, srcLongitude: 88.3629,
-                  desLatitude: 22.6744, desLongitude: 88.3629,
-                  strokeColor: "#FF0000", strokeWidth: 3, pathType: "straightline"
-                },
-
-              ],
-
-              // Heatmap Example
-              enable: false,
-              radius: 30,
-              intensity: 1,
-            });
-
-            // To test destruction of map, you can uncomment this:
-            // setTimeout(() => { map.destroy(); }, 15000);
-          });
-        </script>
-
-      </div>
-
-      <!-- ===== /google map theme intrigation option ===== -->
+            <!-- Include the vanilla JS library -->
+            <script src="qmap.js"></script>
+            <script>
+                document.addEventListener("DOMContentLoaded", () => {
+                    const map = new QMap("map-container");
+                });
+            </script>
+        </div>
     </section>
     <!-- /map intrigation end -->
 
 
 
     <!-- ===== contact form validation start ===== -->
-    <section>
+    <!-- <section>
       <div class="bg-white shadow-xl rounded-xl p-8 w-full max-w-md">
 
-        <h2 class="text-2xl font-semibold mb-6 text-center"> Contact Form</h2>
+        <h2 class="text-2xl font-semibold mb-6 text-center">Contact Form</h2>
 
         <div id="dynamicForm" class="space-y-4"></div>
 
@@ -2003,8 +1931,450 @@
         </button>
 
       </div>
-    </section>
-    <!-- ===== /contact form validation end ===== -->
+    </section> -->
+
+
+    <!-- form validation start-->
+    <section class="bg-gray-100 p-6">
+      <div class="max-w-5xl mx-auto bg-white p-6 rounded-lg shadow">
+
+        <h2 class="text-2xl font-semibold mb-4 bg-green-200 p-3 rounded">
+          Add New Contact
+        </h2>
+
+        <form id="contactForm" class="space-y-4">
+
+          <!-- Name & Title -->
+          <div class="grid grid-cols-2 gap-4">
+            <input type="text" id="name" placeholder="Enter your full name"
+              class="p-2 border rounded w-full">
+            
+            <input type="text" id="title" placeholder="Enter your job title"
+              class="p-2 border rounded w-full">
+          </div>
+
+          <!-- Relationship -->
+          <div>
+            <label class="font-medium">Contact Type / Relationship</label>
+            <div class="flex gap-4 mt-2">
+              <label><input type="radio" name="relation" value="Personal" checked> Personal</label>
+              <label><input type="radio" name="relation" value="Business"> Business</label>
+              <label><input type="radio" name="relation" value="Family"> Family</label>
+            </div>
+          </div>
+
+          <!-- Email & Mobile -->
+          <div class="grid grid-cols-2 gap-4">
+            <input type="email" id="email" placeholder="Enter your email"
+              class="p-2 border rounded w-full">
+
+            <input type="tel" id="mobile" placeholder="Enter your mobile number"
+              class="p-2 border rounded w-full">
+          </div>
+
+          <!-- Spouse -->
+          <div class="grid grid-cols-2 gap-4">
+            <input type="text" placeholder="Spouse Name"
+              class="p-2 border rounded w-full">
+
+            <input type="text" placeholder="Spouse Title"
+              class="p-2 border rounded w-full">
+          </div>
+
+          <input type="tel" placeholder="Spouse Mobile"
+            class="p-2 border rounded w-full">
+
+
+          <!-- Address -->
+          <h3 class="text-lg font-semibold mt-6">Address</h3>
+
+          <div class="grid grid-cols-2 gap-4">
+            <input type="text" placeholder="Apartment"
+              class="p-2 border rounded w-full">
+
+            <textarea placeholder="Street Address"
+              class="p-2 border rounded w-full"></textarea>
+          </div>
+
+          <div class="grid grid-cols-2 gap-4">
+            <input type="text" placeholder="City"
+              class="p-2 border rounded w-full">
+
+            <input type="text" placeholder="State / Region"
+              class="p-2 border rounded w-full">
+          </div>
+
+          <div class="grid grid-cols-2 gap-4">
+            <input type="text" id="pin" placeholder="PIN Code"
+              class="p-2 border rounded w-full">
+
+            <select class="p-2 border rounded w-full">
+              <option>Country</option>
+              <option>India</option>
+              <option>USA</option>
+            </select>
+          </div>
+
+          <!-- Terms -->
+          <div class="flex items-center gap-2">
+            <input type="checkbox" id="terms">
+            <label>Agree to terms & conditions</label>
+          </div>
+
+          <!-- Error Message -->
+          <p id="errorMsg" class="text-red-500"></p>
+
+          <!-- Submit -->
+          <button type="submit"
+            class="bg-orange-500 text-white px-6 py-2 rounded">
+            Save Changes
+          </button>
+
+        </form>
+  </div>
+</section>
+
+<!-- form 2-->
+<section>
+<QForm
+      cms_form_Id="1767180272273851"
+      apiUrl="https://jsonplaceholder.typicode.com/posts"
+      widgetId="1767180272273851"
+      headerText="Form"
+      tailwaindClasses="w-full h-auto static"
+    >
+        <QFlex
+          widgetId="1767180382582270"
+          headerText="Add Widgets"
+          tailwaindClasses="w-full h-auto pt-[10px] pb-[10px] static flex flex-row justify-start items-start gap-y-[15px] gap-x-[15px]"
+        >
+            <QFullWidth
+            widgetId="1767180574565057"
+            headerText="Add Widgets"
+            tailwaindClasses="w-[48%] h-auto static block"
+          >
+                <QFormInputElement
+                widgetId="1767180704224825"
+                headerText="First Name"
+                tailwaindClasses="w-full h-auto relative block"
+              >
+                  <QFlex
+                    widgetId="1767180708295102"
+                    tailwaindClasses="w-full h-auto relative"
+                  >
+                      <QInputText
+                      readOnly="false"
+                      cms_form_Id="1767180272273851"
+                      cmsFormInputLabel="1767180704224825"
+                      errorSet={{"cms_form_input_Id":"1767180704224825","cms_form_Id":"1767180272273851","cms_form_input_Name":"first_name","cms_form_input_Options":{"values":[]},"cms_form_input_Required":"1","cms_form_input_Required_Msg":"Please enter your first name","cms_form_input_Regex":"","cms_form_input_Regex_Msg":"","cms_form_input_Min":"","cms_form_input_Min_Msg":"","cms_form_input_Max":"","cms_form_input_Max_Msg":"","cms_form_input_On_Change_Validation":"0"}}
+                      placeHolder="First Name"
+                      placeHolderFontSize="16px"
+                      placeHolderFontWeight="100"
+                      leftPadding="15"
+                      fontSize="16"
+                      placeHolderTextColor="rgba(9, 25, 42, 1.00)"
+                      widgetId="1767180708297837"
+                      bgColor="rgba(255, 255, 255, 1.00)"
+                      tailwaindClasses="w-full h-[50px] pt-[5px] pb-[5px] pl-[15px] static border-t-[1px] border-r-[1px] border-b-[1px] border-l-[1px] border-t-[#C2CDC9FF] border-r-[#C2CDC9FF] border-b-[#C2CDC9FF] border-l-[#C2CDC9FF] rounded-tr-[10px] rounded-tl-[10px] rounded-bl-[10px] rounded-br-[10px] font-['DMSans'] text-base font-thin text-[#09192AFF]"
+                    >
+
+                      </QInputText>
+
+                  </QFlex>
+                  <QErrorMessage
+                    cms_form_Id="1767180272273851"
+                    cms_form_input_Id="1767180704224825"
+                    widgetId="1767180708301589"
+                    headerText="Please enter your first name"
+                    tailwaindClasses="w-[auto] h-auto static top-[0px] right-[0px] font-['Arial'] text-sm font-normal text-[#FF0000] text-right"
+                  />
+
+                </QFormInputElement>
+
+            </QFullWidth>
+            <QFullWidth
+            widgetId="1767180643884301"
+            headerText="Add Widgets"
+            tailwaindClasses="w-[48%] h-auto static block"
+          >
+                <QFormInputElement
+                widgetId="1767180801453805"
+                headerText="Last Name"
+                tailwaindClasses="w-full h-auto relative block"
+              >
+                  <QFlex
+                    widgetId="1767180805277469"
+                    tailwaindClasses="w-full h-auto relative"
+                  >
+                      <QInputText
+                      readOnly="false"
+                      cms_form_Id="1767180272273851"
+                      cmsFormInputLabel="1767180801453805"
+                      errorSet={{"cms_form_input_Id":"1767180801453805","cms_form_Id":"1767180272273851","cms_form_input_Name":"last_name","cms_form_input_Options":{"values":[]},"cms_form_input_Required":"1","cms_form_input_Required_Msg":"Please enter your last name","cms_form_input_Regex":"","cms_form_input_Regex_Msg":"","cms_form_input_Min":"","cms_form_input_Min_Msg":"","cms_form_input_Max":"","cms_form_input_Max_Msg":"","cms_form_input_On_Change_Validation":"0"}}
+                      placeHolder="Last Name"
+                      placeHolderFontSize="16px"
+                      placeHolderFontWeight="100"
+                      leftPadding="15"
+                      fontSize="16"
+                      placeHolderTextColor="rgba(9, 25, 42, 1.00)"
+                      widgetId="1767180805274022"
+                      bgColor="rgba(255, 255, 255, 1.00)"
+                      tailwaindClasses="w-full h-[50px] pt-[5px] pb-[5px] pl-[15px] static border-t-[1px] border-r-[1px] border-b-[1px] border-l-[1px] border-t-[#C2CDC9FF] border-r-[#C2CDC9FF] border-b-[#C2CDC9FF] border-l-[#C2CDC9FF] rounded-tr-[10px] rounded-tl-[10px] rounded-bl-[10px] rounded-br-[10px] font-['DMSans'] text-base font-thin text-[#09192AFF]"
+                    >
+
+                      </QInputText>
+
+                  </QFlex>
+                  <QErrorMessage
+                    cms_form_Id="1767180272273851"
+                    cms_form_input_Id="1767180801453805"
+                    widgetId="1767180805280197"
+                    headerText="Please enter your last name"
+                    tailwaindClasses="w-[auto] h-auto static top-[0px] right-[0px] font-['Arial'] text-sm font-normal text-[#FF0000] text-right"
+                  />
+
+                </QFormInputElement>
+
+            </QFullWidth>
+
+        </QFlex>
+        <QFlex
+          widgetId="1767180499954775"
+          headerText="Add Widgets"
+          tailwaindClasses="w-full h-auto pt-[10px] pb-[10px] static flex flex-row justify-start items-center gap-y-[15px] gap-x-[15px]"
+        >
+            <QFullWidth
+            widgetId="1767180664949922"
+            headerText="Add Widgets"
+            tailwaindClasses="w-[48%] h-auto static block"
+          >
+                <QFormInputElement
+                widgetId="1767180909380913"
+                headerText="Email"
+                tailwaindClasses="w-full h-auto relative block"
+              >
+                  <QFlex
+                    widgetId="1767180919277608"
+                    tailwaindClasses="w-full h-auto relative"
+                  >
+                      <QInputText
+                      readOnly="false"
+                      cms_form_Id="1767180272273851"
+                      cmsFormInputLabel="1767180909380913"
+                      errorSet={{"cms_form_input_Id":"1767180909380913","cms_form_Id":"1767180272273851","cms_form_input_Name":"email","cms_form_input_Options":{"values":[]},"cms_form_input_Required":"1","cms_form_input_Required_Msg":"Please enter your email address","cms_form_input_Regex":"","cms_form_input_Regex_Msg":"","cms_form_input_Min":"","cms_form_input_Min_Msg":"","cms_form_input_Max":"","cms_form_input_Max_Msg":"","cms_form_input_On_Change_Validation":"0"}}
+                      placeHolder="Email"
+                      placeHolderFontSize="16px"
+                      placeHolderFontWeight="100"
+                      leftPadding="15"
+                      fontSize="16"
+                      placeHolderTextColor="rgba(9, 25, 42, 1.00)"
+                      widgetId="1767180919278123"
+                      bgColor="rgba(255, 255, 255, 1.00)"
+                      tailwaindClasses="w-full h-[50px] pt-[5px] pb-[5px] pl-[15px] static border-t-[1px] border-r-[1px] border-b-[1px] border-l-[1px] border-t-[#C2CDC9FF] border-r-[#C2CDC9FF] border-b-[#C2CDC9FF] border-l-[#C2CDC9FF] rounded-tr-[10px] rounded-tl-[10px] rounded-bl-[10px] rounded-br-[10px] font-['DMSans'] text-base font-thin text-[#09192AFF]"
+                    >
+
+                      </QInputText>
+
+                  </QFlex>
+                  <QErrorMessage
+                    cms_form_Id="1767180272273851"
+                    cms_form_input_Id="1767180909380913"
+                    widgetId="1767180919285693"
+                    headerText="Please enter your email address"
+                    tailwaindClasses="w-[auto] h-auto static top-[0px] right-[0px] font-['Arial'] text-sm font-normal text-[#FF0000] text-right"
+                  />
+
+                </QFormInputElement>
+
+            </QFullWidth>
+            <QFullWidth
+            widgetId="1767180680559486"
+            headerText="Add Widgets"
+            tailwaindClasses="w-[48%] h-auto static block"
+          >
+                <QFormInputElement
+                widgetId="1767180962291895"
+                headerText="Mobile"
+                tailwaindClasses="w-full h-auto relative block"
+              >
+                  <QFlex
+                    widgetId="1767180967091938"
+                    tailwaindClasses="w-full h-auto relative"
+                  >
+                      <QInputText
+                      readOnly="false"
+                      cms_form_Id="1767180272273851"
+                      cmsFormInputLabel="1767180962291895"
+                      errorSet={{"cms_form_input_Id":"1767180962291895","cms_form_Id":"1767180272273851","cms_form_input_Name":"mobile","cms_form_input_Options":{"values":[]},"cms_form_input_Required":"1","cms_form_input_Required_Msg":"Please enter your mobile number","cms_form_input_Regex":"","cms_form_input_Regex_Msg":"","cms_form_input_Min":"","cms_form_input_Min_Msg":"","cms_form_input_Max":"","cms_form_input_Max_Msg":"","cms_form_input_On_Change_Validation":"0"}}
+                      textInputType="number"
+                      placeHolder="Mobile"
+                      placeHolderFontSize="16px"
+                      placeHolderFontWeight="100"
+                      leftPadding="15"
+                      fontSize="16"
+                      placeHolderTextColor="rgba(9, 25, 42, 1.00)"
+                      widgetId="1767180967093289"
+                      bgColor="rgba(255, 255, 255, 1.00)"
+                      tailwaindClasses="w-full h-[50px] pt-[5px] pb-[5px] pl-[15px] static border-t-[1px] border-r-[1px] border-b-[1px] border-l-[1px] border-t-[#C2CDC9FF] border-r-[#C2CDC9FF] border-b-[#C2CDC9FF] border-l-[#C2CDC9FF] rounded-tr-[10px] rounded-tl-[10px] rounded-bl-[10px] rounded-br-[10px] font-['DMSans'] text-base font-thin text-[#09192AFF]"
+                    >
+
+                      </QInputText>
+
+                  </QFlex>
+                  <QErrorMessage
+                    cms_form_Id="1767180272273851"
+                    cms_form_input_Id="1767180962291895"
+                    textInputType="number"
+                    widgetId="1767180967084071"
+                    headerText="Please enter your mobile number"
+                    tailwaindClasses="w-[auto] h-auto static top-[0px] right-[0px] font-['Arial'] text-sm font-normal text-[#FF0000] text-right"
+                  />
+
+                </QFormInputElement>
+
+            </QFullWidth>
+
+        </QFlex>
+        <QFlex
+          widgetId="1767180511614288"
+          headerText="Add Widgets"
+          tailwaindClasses="w-full h-[70px] pt-[10px] static block"
+        >
+            <QFormInputElement
+            widgetId="1767181148252941"
+            headerText="Business Name"
+            tailwaindClasses="w-full h-auto relative block"
+          >
+              <QFlex
+                widgetId="1767181153359596"
+                tailwaindClasses="w-full h-auto relative"
+              >
+                  <QInputText
+                  readOnly="false"
+                  cms_form_Id="1767180272273851"
+                  cmsFormInputLabel="1767181148252941"
+                  errorSet={{"cms_form_input_Id":"1767181148252941","cms_form_Id":"1767180272273851","cms_form_input_Name":"business_name","cms_form_input_Options":{"values":[]},"cms_form_input_Required":"1","cms_form_input_Required_Msg":"Please enter your business name","cms_form_input_Regex":"","cms_form_input_Regex_Msg":"","cms_form_input_Min":"","cms_form_input_Min_Msg":"","cms_form_input_Max":"","cms_form_input_Max_Msg":"","cms_form_input_On_Change_Validation":"0"}}
+                  placeHolder="Business Name"
+                  placeHolderFontSize="16px"
+                  placeHolderFontWeight="100"
+                  leftPadding="15"
+                  fontSize="16"
+                  placeHolderTextColor="rgba(9, 25, 42, 1.00)"
+                  widgetId="1767181153353197"
+                  bgColor="rgba(255, 255, 255, 1.00)"
+                  tailwaindClasses="w-full h-[50px] pt-[5px] pb-[5px] pl-[15px] static border-t-[1px] border-r-[1px] border-b-[1px] border-l-[1px] border-t-[#C2CDC9FF] border-r-[#C2CDC9FF] border-b-[#C2CDC9FF] border-l-[#C2CDC9FF] rounded-tr-[10px] rounded-tl-[10px] rounded-bl-[10px] rounded-br-[10px] font-['DMSans'] text-base font-thin text-[#09192AFF]"
+                >
+
+                  </QInputText>
+
+              </QFlex>
+              <QErrorMessage
+                cms_form_Id="1767180272273851"
+                cms_form_input_Id="1767181148252941"
+                widgetId="1767181153359499"
+                headerText="Please enter your business name"
+                tailwaindClasses="w-[auto] h-auto static top-[0px] right-[0px] font-['Arial'] text-sm font-normal text-[#FF0000] text-right"
+              />
+
+            </QFormInputElement>
+
+        </QFlex>
+        <QFlex
+          widgetId="1767180504576404"
+          headerText="Add Widgets"
+          tailwaindClasses="w-full h-[123.09px] pt-[10px] pb-[10px] static block"
+        >
+            <QFormInputElement
+            widgetId="1767181191239182"
+            headerText="Business Address"
+            tailwaindClasses="w-full h-auto relative border-t-[#C2CDC9FF] border-r-[#C2CDC9FF] border-b-[#C2CDC9FF] border-l-[#C2CDC9FF] rounded-tr-[10px] rounded-tl-[10px] rounded-bl-[10px] rounded-br-[10px] block"
+          >
+              <QFlex
+                widgetId="1767181198803441"
+                tailwaindClasses="w-full h-auto static border-t-[#C2CDC9FF] border-r-[#C2CDC9FF] border-b-[#C2CDC9FF] border-l-[#C2CDC9FF] rounded-tr-[10px] rounded-tl-[10px] rounded-bl-[10px] rounded-br-[10px]"
+                isAnimationP="true"
+                animationType="none"
+                animationDirection="none"
+                animationEasing="none"
+                animationIterations="1"
+                animationDelay="1s"
+                isRevarsed="false"
+                animationDuration="1s"
+                maxValue="1"
+                minValue="0"
+              >
+                  <QTextArea
+                  cms_form_Id="1767180272273851"
+                  cmsFormInputLabel="1767181191239182"
+                  errorSet={{"cms_form_input_Id":"1767181191239182","cms_form_Id":"1767180272273851","cms_form_input_Name":"business_address","cms_form_input_Options":{"values":[]},"cms_form_input_Required":"1","cms_form_input_Required_Msg":"Please enter your business address","cms_form_input_Regex":"","cms_form_input_Regex_Msg":"","cms_form_input_Min":"","cms_form_input_Min_Msg":"","cms_form_input_Max":"","cms_form_input_Max_Msg":"","cms_form_input_On_Change_Validation":"0"}}
+                  placeHolder="Business Address"
+                  maxWords="1000"
+                  showNumberCount="0"
+                  showResizeButton="0"
+                  widgetId="1767181198809527"
+                  bgColor="rgba(255, 255, 255, 1.00)"
+                  headerText="business_address"
+                  tailwaindClasses="w-full h-[100px] pt-[5px] pl-[15px] static border-t-[1px] border-r-[1px] border-b-[1px] border-l-[1px] border-t-[#C2CDC9FF] border-r-[#C2CDC9FF] border-b-[#C2CDC9FF] border-l-[#C2CDC9FF] rounded-tr-[10px] rounded-tl-[10px] rounded-bl-[10px] rounded-br-[10px] font-['DMSans'] text-base font-thin text-[#09192AFF]"
+                />
+
+              </QFlex>
+              <QErrorMessage
+                cms_form_Id="1767180272273851"
+                cms_form_input_Id="1767181191239182"
+                widgetId="1767181198805347"
+                headerText="Please enter your business address"
+                tailwaindClasses="w-[auto] h-auto static top-[0px] right-[0px] font-['Arial'] text-sm font-normal text-[#FF0000] text-right"
+              />
+
+            </QFormInputElement>
+
+        </QFlex>
+        <QFlex
+          widgetId="1767180532395591"
+          headerText="Add Widgets"
+          tailwaindClasses="w-full h-auto pt-[10px] pb-[10px] static flex flex-row justify-start items-start"
+        >
+            <QFormInputElement
+            widgetId="1767181228496118"
+            headerText="Reason"
+            tailwaindClasses="w-full h-auto relative block"
+          >
+              <QFlex
+                widgetId="1767181233480640"
+                tailwaindClasses="w-full h-auto static border-t-[#C2CDC9FF] border-r-[#C2CDC9FF] border-b-[#C2CDC9FF] border-l-[#C2CDC9FF] rounded-tr-[10px] rounded-tl-[10px] rounded-bl-[10px] rounded-br-[10px]"
+              >
+                  <QTextArea
+                  cms_form_Id="1767180272273851"
+                  cmsFormInputLabel="1767181228496118"
+                  errorSet={{"cms_form_input_Id":"1767181228496118","cms_form_Id":"1767180272273851","cms_form_input_Name":"reason","cms_form_input_Options":{"values":[]},"cms_form_input_Required":"0","cms_form_input_Required_Msg":"","cms_form_input_Regex":"","cms_form_input_Regex_Msg":"","cms_form_input_Min":"","cms_form_input_Min_Msg":"","cms_form_input_Max":"","cms_form_input_Max_Msg":"","cms_form_input_On_Change_Validation":"0"}}
+                  placeHolder="Reason for requiring the device"
+                  maxWords="1000"
+                  showNumberCount="0"
+                  showResizeButton="0"
+                  widgetId="1767181233480150"
+                  bgColor="rgba(255, 255, 255, 1.00)"
+                  headerText="reason"
+                  tailwaindClasses="w-full h-[100px] pt-[5px] pl-[15px] static border-t-[1px] border-r-[1px] border-b-[1px] border-l-[1px] border-t-[#C2CDC9FF] border-r-[#C2CDC9FF] border-b-[#C2CDC9FF] border-l-[#C2CDC9FF] rounded-tr-[10px] rounded-tl-[10px] rounded-bl-[10px] rounded-br-[10px] text-base font-thin text-[#09192AFF]"
+                />
+
+              </QFlex>
+              <QErrorMessage
+                cms_form_Id="1767180272273851"
+                cms_form_input_Id="1767181228496118"
+                widgetId="1767181233482259"
+                tailwaindClasses="w-[auto] h-auto absolute top-[0px] right-[0px] text-xl font-normal text-[#FF0000]"
+              />
+
+            </QFormInputElement>
+
+        </QFlex>
+
+      </QForm>
+</section>
+<!-- /from 2 -->
+
+<!-- /form validation end-->
+<!-- ===== /contact form validation end ===== -->
 
 
     <!-- ===== animation start ===== -->
